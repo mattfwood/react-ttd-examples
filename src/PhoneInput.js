@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-function PhoneInput({ value, onChange }) {
+function PhoneInput() {
+  const [value, setValue] = useState('');
   const [error, setError] = useState(null);
   // check that input is only up to 10 numbers
   const regex = /^[0-9]{0,10}$/;
@@ -8,11 +9,15 @@ function PhoneInput({ value, onChange }) {
   function handleChange(e) {
     // only change input if value is a number
     if (regex.test(e.target.value)) {
-      onChange(e.target.value);
+      setValue(e.target.value);
       setError(null);
     } else {
-      // @TODO: Make more specific error messages
-      setError('Please Only Enter Numbers')
+      if (e.target.value.length > 10) {
+        setError('Please Enter Less Than 10 Numbers');
+      } else {
+        // @TODO: Make more specific error messages
+        setError('Please Only Enter Numbers')
+      }
     }
   }
 
@@ -23,7 +28,7 @@ function PhoneInput({ value, onChange }) {
 
       </label>
       {error !== null && (
-        <div className="error">{error}</div>
+        <div className="error" aria-label="error-message">{error}</div>
       )}
     </>
   )
